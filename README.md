@@ -37,6 +37,9 @@ An attacker obtains leaked credentials and uses them to enumerate resources, acc
 | 📦 Data     | S3 Bucket    | Public access leading to data exposure      |
 | 🌐 Network  | EC2 Instance | Open SSH access to the internet             |
 
+## 🧱 Architecture
+
+![Architecture](./architecture.png)
 ---
 
 ## 🧑‍💻 Attack Simulation
@@ -123,10 +126,7 @@ Detailed security findings and analysis are available here:
 ---
 
 ## 🔗 Medium Article
-
-Read the full breakdown of this project:
-
-👉 https://thep3arl.medium.com/aws-attack-surface-exploitation-part-1-initial-access-c9c2758517eb
+👉 [Read Full Walkthrough on Medium](https://thep3arl.medium.com/aws-attack-surface-exploitation-part-1-initial-access-c9c2758517eb)
 
 ---
 
