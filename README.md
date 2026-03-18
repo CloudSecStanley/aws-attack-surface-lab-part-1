@@ -142,5 +142,4 @@ Part 2 will focus on:
 
 ## 📬 Connect
 
-* LinkedIn: https://linkedin.com/in/stanley-ndege-998822311
-* Medium: https://medium.com/@thep3arl
+* [LinkedIn](https://linkedin.com/in/stanley-ndege-998822311)
