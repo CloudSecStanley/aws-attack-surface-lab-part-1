@@ -1,46 +1,55 @@
-# aws-attack-surface-lab-part-1
-AWS Attack Surface Lab – Initial Access, Misconfigurations &amp; CloudTrail Detection
-
-
-# AWS Attack Surface Lab – Part 1: Initial Access
+# AWS Attack Surface Lab – Part 1: Initial Access & Misconfigurations
 
 ## 📌 Overview
 
-This project simulates a cloud environment with multiple security misconfigurations to demonstrate how attackers gain initial access and how their actions can be detected using AWS CloudTrail.
+This project simulates a vulnerable AWS environment to demonstrate how attackers gain initial access through common cloud misconfigurations and how their actions can be detected using AWS CloudTrail.
+
+The lab focuses on **real-world attack entry points**, including exposed credentials, public storage, and network misconfigurations.
 
 ---
 
 ## 🚨 Scenario
 
-The environment contains:
+An AWS environment was intentionally configured with multiple security weaknesses:
 
-* Over-permissive IAM user (`AdministratorAccess`)
-* Publicly accessible S3 bucket
-* EC2 instance with SSH exposed to the internet
+* An over-permissive IAM user (`AdministratorAccess`)
+* A publicly accessible S3 bucket
+* An EC2 instance exposed to the internet via open SSH (port 22)
 
-An attacker obtains leaked credentials and performs enumeration and data access activities.
+An attacker obtains leaked credentials and uses them to enumerate resources, access data, and explore the environment.
+
+---
+
+## 🎯 Objectives
+
+* Identify common AWS attack surfaces
+* Simulate attacker behavior using AWS CLI
+* Analyze activity using CloudTrail logs
+* Apply remediation to secure the environment
 
 ---
 
 ## 🔍 Attack Surfaces
 
-* IAM Misconfiguration (Excessive permissions)
-* S3 Public Access (Data exposure)
-* EC2 Network Exposure (Open SSH)
+| Type        | Resource     | Risk                                        |
+| ----------- | ------------ | ------------------------------------------- |
+| 🔑 Identity | IAM User     | Excessive permissions (AdministratorAccess) |
+| 📦 Data     | S3 Bucket    | Public access leading to data exposure      |
+| 🌐 Network  | EC2 Instance | Open SSH access to the internet             |
 
 ---
 
 ## 🧑‍💻 Attack Simulation
 
-The attacker:
+After obtaining leaked credentials, the attacker performed the following actions:
 
-1. Identified identity:
+### 1. Identity Validation
 
 ```bash
 aws sts get-caller-identity
 ```
 
-2. Enumerated resources:
+### 2. Enumeration
 
 ```bash
 aws iam list-users
@@ -48,55 +57,90 @@ aws s3 ls
 aws ec2 describe-instances
 ```
 
-3. Accessed S3 data:
+### 3. Data Access
 
 ```bash
-aws s3 cp s3://misconfigurations-lab1/test.txt .
+aws s3 cp s3://cloudsec-stanley-lab/test.txt .
 ```
+
+These steps demonstrate typical **post-compromise reconnaissance and data access behavior**.
 
 ---
 
 ## 📊 Detection with CloudTrail
 
-CloudTrail logs were used to identify:
+CloudTrail was used to analyze attacker activity through API logs.
 
-* Identity validation (`GetCallerIdentity`)
-* Resource enumeration (`ListUsers`, `DescribeInstances`, `ListBuckets`)
-* Data access attempts (`GetObject`)
+### Key Observed Events:
 
-Key fields analyzed:
+* `GetCallerIdentity`
+* `ListUsers`
+* `ListBuckets`
+* `DescribeInstances`
+
+### Indicators of Compromise:
+
+* Use of AWS CLI (`userAgent: aws-cli`)
+* Enumeration of multiple services
+* Access to storage resources
+
+### Key Fields Analyzed:
 
 * UserIdentity
 * SourceIPAddress
 * EventTime
-* UserAgent (`aws-cli`)
+* UserAgent
 
 ---
 
-## 🔐 Remediation
+## 🔐 Remediation 
+
+The following actions were taken to secure the environment:
 
 * Removed `AdministratorAccess` from IAM user
 * Enabled S3 Block Public Access
-* Restricted SSH access to specific IP
+* Restricted SSH access to trusted IP addresses
+* Reviewed CloudTrail logging configuration
 
 ---
 
 ## 📂 Findings
 
-See [findings.md](./findings.md) for detailed security analysis.
+Detailed security findings and analysis are available here:
+
+👉 [View Findings Report](./findings.md)
 
 ---
 
 ## 🧠 Lessons Learned
 
-* Misconfigurations are the primary cloud attack surface
+* Misconfigurations are the primary attack surface in cloud environments
 * Leaked credentials can lead to full account compromise
-* CloudTrail is critical for detecting post-compromise activity
+* Enumeration is a critical phase after initial access
+* CloudTrail provides visibility into attacker behavior
 * Least privilege significantly reduces risk
 
 ---
 
 ## 🔗 Medium Article
 
-Read the full walkthrough:
+Read the full breakdown of this project:
+
 👉 https://thep3arl.medium.com/aws-attack-surface-exploitation-part-1-initial-access-c9c2758517eb
+
+---
+
+## 🔜 Next
+
+Part 2 will focus on:
+
+* IAM privilege escalation
+* Persistence techniques
+* Advanced detection and response
+
+---
+
+## 📬 Connect
+
+* LinkedIn: https://linkedin.com/in/stanley-ndege-998822311
+* Medium: https://medium.com/@thep3arl
